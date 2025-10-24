@@ -22,41 +22,32 @@ def api(url):
 def get_matchday():
     matchday = api(matchday_url)
     matchday = matchday["groupName"]
+    with open("Spielbeginn.txt", "r") as f:
+        current_content = f.read().strip()
+    if current_content != matchday:
+        with open("Spielbeginn.txt", "w") as f:
+            f.write(matchday)
     return matchday
+            
+       
     
 
 def get_matches():
-    week_data = api(current_matches_url)
-    return week_data
-
-def matchdata(week_data):
-    games_this_week = []
-    for i in week_data:
-        match_date = i ["matchDateTime"]
-        match_ID = i ["matchID"]
-        team_1 = i ["team1"]["teamName"]
-        team_2 = i ["team2"]["teamName"]
-        
-        matchlist = [match_date, match_ID, team_1, team_2]
-        print(matchlist)
-    return matchlist
-
-
-
+    return 0
+    
 
 
 def main():
     matchday = get_matchday()
     week_data = get_matches()
-    match_data = matchdata(week_data)
-    print(matchday)
-    print(f"{week_data}\n\n\n\n")
-    print(match_data)
+
+   
+    
 
     
 
 
-schedule.every().thursday.at("18:22:00").do(main)
+schedule.every().day.at("22:11:50").do(main)
 while True:
     schedule.run_pending()
     time.sleep(1)
