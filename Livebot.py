@@ -26,19 +26,37 @@ def get_matchday():
     
 
 def get_matches():
-    this_week = api(current_matches_url)
-    return this_week
+    week_data = api(current_matches_url)
+    return week_data
+
+def matchdata(week_data):
+    games_this_week = []
+    for i in week_data:
+        match_date = i ["matchDateTime"]
+        match_ID = i ["matchID"]
+        team_1 = i ["team1"]["teamName"]
+        team_2 = i ["team2"]["teamName"]
+        
+        matchlist = [match_date, match_ID, team_1, team_2]
+        print(matchlist)
+    return matchlist
+
+
+
+
 
 def main():
     matchday = get_matchday()
-    this_week = get_matches()
+    week_data = get_matches()
+    match_data = matchdata(week_data)
     print(matchday)
-    print(this_week)
+    print(f"{week_data}\n\n\n\n")
+    print(match_data)
 
     
 
 
-schedule.every().saturday.at("12:11:50").do(main)
+schedule.every().thursday.at("18:22:00").do(main)
 while True:
     schedule.run_pending()
     time.sleep(1)
