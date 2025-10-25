@@ -37,10 +37,7 @@ def Spiele(url):
          ws.append(["Heim", "Gast", "Zeitpunt", "ID"])
          ws.append([home, away, match_date_time, id])
     wb.save("Spiele.xlsx")
-    with open ("Spielbeginn.txt", "w") as f:
-        for s in wb.sheetnames:
-            ws = wb[s]
-            f.write(f"{s} - {ws["C2"].value}")
+    
      
 
 

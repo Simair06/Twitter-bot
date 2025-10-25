@@ -5,6 +5,8 @@ import requests
 import os
 from dotenv import load_dotenv
 import schedule
+from Tweeter import tweet, mdprinter
+
 #https://www.openligadb.de/
 
 current_matches_url = "https://api.openligadb.de/getmatchdata/bl1"
@@ -22,34 +24,30 @@ def api(url):
 def get_matchday():
     matchday = api(matchday_url)
     matchday = matchday["groupName"]
-    with open("Spielbeginn.txt", "r") as f:
+    with open("Spieltag.txt", "r") as f:
         current_content = f.read().strip()
     if current_content != matchday:
-        with open("Spielbeginn.txt", "w") as f:
+        with open("Spieltag.txt", "w") as f:
             f.write(matchday)
+            post = mdprinter(matchday)
+            print(post)
     return matchday
-            
-       
-    
+              
 
-def get_matches():
-    return 0
     
 
 
 def main():
     matchday = get_matchday()
-    week_data = get_matches()
+
 
    
-    
-
-    
 
 
-schedule.every().day.at("22:11:50").do(main)
+schedule.every().day.at("11:59:00").do(main)
 while True:
     schedule.run_pending()
     time.sleep(1)
 
 
+#todo -- kürzere Teamnames, dass alles passt
