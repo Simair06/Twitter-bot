@@ -25,8 +25,8 @@ def Spiele(url):
     data = response.json()
     for i in data:
       spieltag = i ["group"]["groupName"]
-      home = i ["team1"] ["teamName"]
-      away = i ["team2"] ["teamName"]
+      home = i ["team1"] ["shortName"]
+      away = i ["team2"] ["shortName"]
       match_date_time = i ["matchDateTime"]
       id = i ["matchID"]
       if spieltag in wb.sheetnames:

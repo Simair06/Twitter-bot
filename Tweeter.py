@@ -14,6 +14,7 @@ def tweet(post):
     access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
     client = tweepy.Client(bearer_key,api_key,api_key_secret,access_token,access_token_secret)
     response = client.create_tweet(text=post)
+    print("Psotes")
     print(response)
 
 
@@ -23,7 +24,7 @@ def mdprinter(matchday):
     ws = wb[matchday]
     
 
-    text = f"Bundesliga MD{md}:\n"
+    text = f"⚽Bundesliga MD{md}\n"
     current_day = None
     
     for i, row in enumerate(ws.iter_rows(values_only=True)):
@@ -38,10 +39,10 @@ def mdprinter(matchday):
         time_str = date_obj.strftime("%H:%M")
         
         if weekday != current_day:
-            text += f"\n{weekday}:\n"
+            text += f"\n{weekday}\n"
             current_day = weekday
 
-        text += f"{time_str} {home} vs {away} | "
+        text += f"{time_str} {home} 🆚 {away}\n"
         
         # Check if we are over 280 characters
         if len(text) > 280:

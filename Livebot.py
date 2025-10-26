@@ -30,7 +30,7 @@ def get_matchday():
         with open("Spieltag.txt", "w") as f:
             f.write(matchday)
             post = mdprinter(matchday)
-            print(post)
+            tweet(post)
     return matchday
               
 
@@ -44,7 +44,7 @@ def main():
    
 
 
-schedule.every().day.at("11:59:00").do(main)
+schedule.every().day.at("12:23:00").do(main)
 while True:
     schedule.run_pending()
     time.sleep(1)
