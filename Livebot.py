@@ -50,7 +50,6 @@ def live():
         match_date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
         if match_date == datetime.date.today():
             today.append({"id" : row[3], "time" : time })
-    today.append({"id" : 77322, "time" : "15:30:00" }) # test
     print(today) 
     return today
        
