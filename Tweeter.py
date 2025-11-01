@@ -14,7 +14,7 @@ def tweet(post):
     access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
     client = tweepy.Client(bearer_key,api_key,api_key_secret,access_token,access_token_secret)
     response = client.create_tweet(text=post)
-    print("Psotes")
+    print("POst")
     print(response)
 
 
@@ -52,3 +52,26 @@ def mdprinter(matchday):
     return text
 
 
+def mprinter(data):
+    text = "⚽ FT\n\n"
+
+    result = data["matchResults"][1]
+
+    home = data["team1"] ["teamName"]
+    away = data["team2"] ["teamName"]
+    home_goals = result["pointsTeam1"]
+    away_goals = result["pointsTeam2"]
+    number_goals = int(home_goals) + int(away_goals)
+
+    text += f"{home} {home_goals} - {away_goals} {away}\n\n"
+
+    for e in data["goals"]:
+        min = e ["matchMinute"]
+        scorer = e ["goalGetterName"]
+        text += f"⚽ {min}' {scorer}\n"
+
+    return text
+    
+
+
+    
