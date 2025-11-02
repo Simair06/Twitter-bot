@@ -50,6 +50,7 @@ def live():
         match_date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
         if match_date == datetime.date.today():
             today.append({"id" : row[3], "time" : time })
+    #today.append({"id" : , "time" : "11:00:00" }) # Spiele die noch nicht gepostet wurden 
     print(today) 
     return today
        
