@@ -1,10 +1,5 @@
 import datetime
-import time
-import threading
 import requests
-import os
-from dotenv import load_dotenv
-import schedule
 from Tweeter import tweet, mdprinter, mprinter
 from openpyxl import load_workbook
 
@@ -24,7 +19,6 @@ def api(url):
 
 
 def get_matchday():
-    matchday
     matchday = api(matchday_url)
     matchday = matchday["groupName"]
     with open("Spieltag.txt", "r") as f:
@@ -50,7 +44,7 @@ def live():
         match_date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
         if match_date == datetime.date.today():
             today.append({"id" : row[3], "time" : time })
-    #today.append({"id" : , "time" : "11:00:00" }) # Spiele die noch nicht gepostet wurden 
+   # today.append({"id" : , "time" : "10:00:00" }) # Spiele die noch nicht gepostet wurden 
     print(today) 
     return today
        
@@ -58,17 +52,10 @@ def live():
 def pruefe_job():
     jetzt = datetime.datetime.now()
     jetzt = jetzt
-    aktuell = []
     spiele = live()
-    for spiel in spiele:
-        start_time = datetime.datetime.strptime(spiel["time"], "%H:%M:%S").time()
-        start = datetime.datetime.combine(datetime.date.today(), start_time)
-        ende = start + datetime.timedelta(hours=3)
-        if start <= jetzt <= ende:
-            aktuell.append(spiel)
-
+  
     
-    if len(aktuell) > 0:
+    if len(spiele) > 0:
         for spiel in spiele:
             id = spiel["id"]
             data = requests.get(f"https://api.openligadb.de/getmatchdata/{id}")
@@ -87,20 +74,13 @@ def txtdel():
         f.write("")
 
 def main():
-    matchday = get_matchday()
+    get_matchday()
+    pruefe_job()
     
 
+main()
 
 
-
-
-schedule.every().day.at("01:00:00").do(txtdel)
-schedule.every().day.at("12:00:00").do(main)
-schedule.every(1).minutes.do(pruefe_job)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
 
 
 
