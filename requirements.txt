@@ -1,0 +1,6 @@
+datetime
+requests
+os
+openpyxl
+python-dotenv
+tweepy
