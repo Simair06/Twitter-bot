@@ -1,0 +1,57 @@
+name: Run Livebot multiple times daily
+
+on:
+  schedule:
+    - cron: "0 9 * * *"    # 10:00 MEZ
+    - cron: "0 12 * * *"   # 13:00 MEZ
+    - cron: "30 14 * * *"  # 15:30 MEZ
+    - cron: "30 16 * * *"  # 17:30 MEZ
+    - cron: "30 19 * * *"  # 20:30 MEZ
+    - cron: "0 22 * * *"   # 23:00 MEZ
+  workflow_dispatch:        # erlaubt manuelles Starten
+
+jobs:
+  run-livebot:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Repo auschecken
+      - uses: actions/checkout@v3
+
+      # 2️⃣ Python installieren
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+
+      # 3️⃣ Abhängigkeiten installieren
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # 4️⃣ Secrets einbinden
+      - name: Set environment variables
+        run: echo "Secrets loaded"
+        env:
+          BEARER_KEY: ${{ secrets.BEARER_KEY }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_KEY_SECRET: ${{ secrets.API_KEY_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          API2_KEY: ${{ secrets.API2_KEY }}
+          # weitere Secrets hier hinzufügen
+
+
+
+      # 5️⃣ Skript ausführen
+      - name: Run Livebot
+        run: python Livebot.py
+        env:
+          BEARER_KEY: ${{ secrets.BEARER_KEY }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_KEY_SECRET: ${{ secrets.API_KEY_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          API2_KEY: ${{ secrets.API2_KEY }}
+          # weitere Secrets hier hinzufügen
