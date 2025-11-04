@@ -76,6 +76,8 @@ def txtdel():
 def main():
     get_matchday()
     pruefe_job()
+    hallo = "Hallo"
+    tweet(hallo)
     
 
 main()
