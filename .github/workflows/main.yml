@@ -1,0 +1,35 @@
+name: Run Livebot multiple times daily
+
+on:
+  schedule:
+    - cron: "0 9 * * *"    # 10:00 MEZ
+    - cron: "0 12 * * *"   # 13:00 MEZ
+    - cron: "30 14 * * *"  # 15:30 MEZ
+    - cron: "30 16 * * *"  # 17:30 MEZ
+    - cron: "30 19 * * *"  # 20:30 MEZ
+    - cron: "0 22 * * *"   # 23:00 MEZ
+  workflow_dispatch:        # erlaubt manuelles Starten
+
+jobs:
+  run-livebot:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Repo auschecken
+      - uses: actions/checkout@v3
+
+      # Python installieren
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+
+      # Abhängigkeiten installieren, falls vorhanden
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # Skript ausführen
+      - name: Run Livebot
+        run: python Livebot.py
