@@ -1,6 +1,5 @@
-datetime
-requests
-os
 openpyxl
 python-dotenv
+requests
+datetime
 tweepy
