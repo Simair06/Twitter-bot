@@ -11,6 +11,26 @@ matchday_url = "https://api.openligadb.de/getcurrentgroup/bl1"
 
 print(datetime.datetime.now())
 
+bundesliga_vereine = {
+    "FC Bayern München": "🔴⚪ | FCB",
+    "Borussia Dortmund": "⚫🟡 | BVB",
+    "RB Leipzig": "🔴⚪ | RBL",
+    "Bayer 04 Leverkusen": "🔴⚫ | B04",
+    "Eintracht Frankfurt": "⚫🔴 | SGE",
+    "Borussia Mönchengladbach": "🟢⚫ | BMG",
+    "VfB Stuttgart": "🔴⚪ | VfB",
+    "1. FC Köln": "🔴⚪ | FC",
+    "1. FC Union Berlin": "🔴⚪ | FCU",
+    "1. FSV Mainz 05": "🔴⚪ | M05",
+    "FC Augsburg": "🔴🟢 | FCA",
+    "SC Freiburg": "⚫⚪ | SCF",
+    "TSG Hoffenheim": "🔵⚪ | TSG",
+    "SV Werder Bremen": "🟢⚪ | SVW",
+    "VfL Wolfsburg": "🟢⚪ | WOB",
+    "Hamburger SV": "🔵⚪ | HSV",
+    "FC St. Pauli": "🟤⚪ | FCSP",
+    "1. FC Heidenheim 1846": "🔴🔵 | FCH"
+}
 
 def api(url):
     response = requests.get(url)
@@ -44,12 +64,12 @@ def live():
         match_date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
         if match_date == datetime.date.today():
             today.append({"id" : row[3], "time" : time })
-   # today.append({"id" : , "time" : "10:00:00" }) # Spiele die noch nicht gepostet wurden 
+    #today.append({"id" :  , "time" : "10:00:00" }) # Spiele die noch nicht gepostet wurden 
     print(today) 
     return today
        
 
-def pruefe_job():
+def pruefe_job(bl):
     jetzt = datetime.datetime.now()
     jetzt = jetzt
     spiele = live()
@@ -63,7 +83,7 @@ def pruefe_job():
             with open("posted.txt", "r") as f:
                 content = f.read()
             if (data["matchIsFinished"]) and (str(id) not in content):
-                    text = mprinter(data)
+                    text = mprinter(data,bl)
                     tweet(text)
                     with open("posted.txt", "a") as f:
                         f.write(f"{str(id)}\n")
@@ -75,9 +95,8 @@ def txtdel():
 
 def main():
     get_matchday()
-    pruefe_job()
-    hallo = "Hallo"
-    tweet(hallo)
+    pruefe_job(bundesliga_vereine)
+    
     
 
 main()

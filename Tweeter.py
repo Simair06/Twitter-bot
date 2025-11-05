@@ -52,24 +52,36 @@ def mdprinter(matchday):
     return text
 
 
-def mprinter(data):
-    text = "⚽ FT\n\n"
+def mprinter(data, bl):
+    text = "🕐FT\n"
 
     result = data["matchResults"][1]
 
-    home = data["team1"] ["teamName"]
-    away = data["team2"] ["teamName"]
+    home = data["team1"] ["shortName"]
+    home_col,home_short = bl[data["team1"]["teamName"]].split("| ")
+    away = data["team2"] ["shortName"]
+    away_col,away_short = bl[data["team2"]["teamName"]].split("| ")
     home_goals = result["pointsTeam1"]
     away_goals = result["pointsTeam2"]
     number_goals = int(home_goals) + int(away_goals)
 
-    text += f"{home} {home_goals} - {away_goals} {away}\n\n"
+
+   
+    text += f"{home_col}{home} {home_goals} - {away_goals} {away}{away_col} \n\n"
+
+
 
     for e in data["goals"]:
         min = e ["matchMinute"]
         scorer = e ["goalGetterName"]
-        text += f"⚽ {min}' {scorer}\n"
+        text += f"\n⚽ {min}' {scorer}"
+        if e["isPenalty"]:
+            text += " (P)"
+        if e["isOwnGoal"]:
+            text += " (OG)"
 
+
+    text += f"\n\n#{home_short}{away_short} #bundesliga #football #goals"
     return text
     
 
