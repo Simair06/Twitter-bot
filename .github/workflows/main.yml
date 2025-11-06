@@ -2,7 +2,7 @@ name: Run Livebot multiple times daily
 
 on:
   schedule:
-    - cron: "0 9 * * *"    # 10:00 MEZ
+    - cron: "0 09 * * *"    # 10:00 MEZ
     - cron: "0 12 * * *"   # 13:00 MEZ
     - cron: "30 14 * * *"  # 15:30 MEZ
     - cron: "30 16 * * *"  # 17:30 MEZ
@@ -10,17 +10,23 @@ on:
     - cron: "0 22 * * *"   # 23:00 MEZ
   workflow_dispatch:        # erlaubt manuelles Starten
 
+permissions:
+  contents: write           # erlaubt das Pushen ins Repo
+
 jobs:
   run-livebot:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Repo auschecken
-      - uses: actions/checkout@v3
+      # 1️⃣ Repository auschecken
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true   # damit git push funktioniert
 
       # 2️⃣ Python installieren
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.13"
 
@@ -30,21 +36,7 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # 4️⃣ Secrets einbinden
-      - name: Set environment variables
-        run: echo "Secrets loaded"
-        env:
-          BEARER_KEY: ${{ secrets.BEARER_KEY }}
-          API_KEY: ${{ secrets.API_KEY }}
-          API_KEY_SECRET: ${{ secrets.API_KEY_SECRET }}
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
-          API2_KEY: ${{ secrets.API2_KEY }}
-          # weitere Secrets hier hinzufügen
-
-
-
-      # 5️⃣ Skript ausführen
+      # 4️⃣ Livebot-Skript ausführen
       - name: Run Livebot
         run: python Livebot.py
         env:
@@ -54,4 +46,19 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           API2_KEY: ${{ secrets.API2_KEY }}
-          # weitere Secrets hier hinzufügen
+
+      # 5️⃣ Änderungen committen und pushen
+      - name: Commit and push updated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Nur committen, wenn sich etwas geändert hat
+          git add Spieltag.txt posted.txt || true
+
+          if git diff --cached --quiet; then
+            echo "Keine Änderungen – kein Commit notwendig."
+          else
+            git commit -m "Update Spieltag & posted [${{ github.run_id }}]"
+            git push
+          fi
