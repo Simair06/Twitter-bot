@@ -71,22 +71,7 @@ def excel_writer(table):
             cell_ref = f"G{i}"
             img.anchor = cell_ref
             
-            # Offset in Punkten setzen (vertikal nach unten verschieben)
-            from openpyxl.drawing.spreadsheet_drawing import OneCellAnchor, AnchorMarker
-            from openpyxl.utils.units import pixels_to_emus
-            
-            # Erstelle einen OneCellAnchor mit Offset
-            row_idx = i - 1  # 0-basierter Index
-            col_idx = 6      # Spalte G ist Index 6 (0-basiert)
-            
-            # Offset in EMU (English Metric Units) - 8 Pixel ≈ 600000 EMU
-            y_offset = 600000  # Experimentieren Sie mit diesem Wert
-            
-            marker = AnchorMarker(col=col_idx, colOff=0, row=row_idx, rowOff=y_offset)
-            img.anchor = OneCellAnchor(_from=marker)
-
-# Bild 8 Pixel nach unten verschieben (anpassen wie du willst)
-            img.anchor.offset = (0, 8)
+          
             ws.add_image(img)
         else:
             print(f"Logo nicht gefunden: {logo_path}")
