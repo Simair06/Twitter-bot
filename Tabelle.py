@@ -2,6 +2,7 @@ import openpyxl
 from openpyxl.drawing.image import Image
 import os
 import requests
+import excel2img
 
 # Beispiel-Dictionary, jetzt mit lokalem Pfad zum Logo
 logos = {
@@ -50,17 +51,24 @@ def excel_writer(table):
     wb = openpyxl.load_workbook(excel_file)
     ws = wb.active
 
-    # Startzeile = 4
-    start_row = 4
+    for img in list(ws._images):  
+        ws._images.remove(img)
 
+
+    
     # Daten einfügen
-    for i, team in enumerate(table, start=start_row):
+    for i, team in enumerate(table, start = 1): 
+        cells = {"1": 5,"2": 7,"3": 9,"4": 11,"5": 13,"6": 15,"7": 17,"8": 19,"9": 21,"10": 23,"11": 25,"12": 27,"13": 29,"14": 31,"15": 33,"16": 35,"17": 37,"18": 39}
+
+
+        cell = cells[str(i)]
+
         # Spalten H–L füllen
-        ws[f"H{i}"] = team[0]
-        ws[f"I{i}"] = team[1]
-        ws[f"J{i}"] = team[2]
-        ws[f"K{i}"] = team[3]
-        ws[f"L{i}"] = team[4]
+        ws[f"H{cell}"] = team[0]
+        ws[f"I{cell}"] = team[1]
+        ws[f"J{cell}"] = team[2]
+        ws[f"K{cell}"] = team[3]
+        ws[f"L{cell}"] = team[4]
 
         # Logo aus lokalem Ordner einfügen
         logo_path = logos[team[0]]
@@ -68,26 +76,46 @@ def excel_writer(table):
             img = Image(logo_path)
             img.width = 20
             img.height = 20
-            cell_ref = f"G{i}"
+            cell_ref = f"G{cell}"
             img.anchor = cell_ref
             
           
             ws.add_image(img)
         else:
             print(f"Logo nicht gefunden: {logo_path}")
+        
 
 
 
 
     # Spaltenbreite anpassen
-    ws.column_dimensions["G"].width = 10
-    ws.column_dimensions["H"].width = 20
+    ws.column_dimensions["G"].width = 9
+    ws.column_dimensions["H"].width = 30
 
     # Speichern
     wb.save(excel_file)
     print(f"Excel-Datei '{excel_file}' erfolgreich aktualisiert ab Zeile 4!")
 
 
+    output_file = "Screenshots_table/table.png"
+    sheet_name = "Tabelle1"
+    excel_range = "E2:M41"
+    excel2img.export_img(excel_file, output_file, sheet_name, excel_range)
 
-table = table_api()
-excel_writer(table)
+
+
+
+
+
+
+def main():
+    table = table_api()
+    excel_writer(table)
+    
+
+main()
+
+
+
+
+

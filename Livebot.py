@@ -1,7 +1,8 @@
 import datetime
 import requests
-from Tweeter import tweet, mdprinter, mprinter
+from Tweeter import tweet, mdprinter, mprinter, tweet_table
 from openpyxl import load_workbook
+import Tabelle as table
 
 #https://www.openligadb.de/
 
@@ -93,9 +94,25 @@ def txtdel():
     with open("posted.txt", "w") as f:
         f.write("")
 
+
+def tablewriter():
+    table.main()
+    tweet_table()
+    
+    
+
+
+
+
+
 def main():
     get_matchday()
     pruefe_job(bundesliga_vereine)
+    now = datetime.datetime.now()
+    if now.weekday() == 0 and now.hour >= 8 and now.hour < 12:  #0 ist Montag
+        tablewriter()
+
+
     
     
 
