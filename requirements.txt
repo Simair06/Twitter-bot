@@ -3,3 +3,4 @@ python-dotenv
 requests
 datetime
 tweepy
+excel2img

@@ -4,18 +4,38 @@ import os
 import datetime
 from openpyxl import load_workbook
 
-def tweet(post):
+
+def keys():
     load_dotenv()
-    print("Working dir:", os.getcwd())
     bearer_key = os.getenv("BEARER_KEY")
     api_key = os.getenv("API_KEY")
     api_key_secret = os.getenv("API_KEY_SECRET")
     access_token = os.getenv("ACCESS_TOKEN")
     access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
     client = tweepy.Client(bearer_key,api_key,api_key_secret,access_token,access_token_secret)
+    auth = tweepy.OAuth1UserHandler(api_key, api_key_secret, access_token, access_token_secret)
+    api = tweepy.API(auth)
+    return client, api#, bearer_key, api_key, api_key_secret, access_token, access_token_secret 
+    
+
+
+def tweet(post):
+    print("Working dir:", os.getcwd())
+    client, _ = keys()
     response = client.create_tweet(text=post)
     print("POst")
     print(response)
+
+
+def tweet_table():
+    path = "Screenshots_table/table.png"
+    client, api = keys()
+    media_id = api.media_upload(path).media_id
+    with open("Spieltag.txt", "r") as f:
+        matchday = f.read().strip()
+    matchday, _ = matchday.split(".")
+    text = f"Bundesliga table after Matchday {matchday}! 📊\n\nWhere does your team rank? Discuss ⬇️\nLike and follow for more!\n\n#Bundesliga #BuLi #table #football #goals #sport #standings"
+    client.create_tweet(text=text, media_ids=[media_id])
 
 
 def mdprinter(matchday):
