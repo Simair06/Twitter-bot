@@ -38,7 +38,7 @@ def render_modern_png(df, logos_dict):
     ax.set_ylim(0, 1)
 
     # Kopf
-    ax.text(0.5, 0.98, "Bundesliga – current standings",
+    ax.text(0.5, 0.98, "Bundesliga – Current standings",
             ha="center", va="center",
             fontsize=26, fontweight="bold", color="#000000")
 
