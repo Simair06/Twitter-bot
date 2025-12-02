@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 from PIL import Image as PILImage
 
 
@@ -39,7 +40,7 @@ def render_modern_png(df, logos_dict):
     # Kopf
     ax.text(0.5, 0.98, "Bundesliga – current standings",
             ha="center", va="center",
-            fontsize=26, fontweight="bold", color="#CC0000")
+            fontsize=26, fontweight="bold", color="#000000")
 
     # Startposition (oben) und Zeilenabstand
     start_y = 0.90
@@ -48,6 +49,32 @@ def render_modern_png(df, logos_dict):
     for idx, row in df.iterrows():
         y = start_y - idx * step
 
+        platz = int(row['Rang'])
+
+        if platz == 1:
+            farbe = "#38B602"
+        elif platz == 2 or platz == 3 or platz == 4:
+            farbe = "#73FF28"
+        elif platz == 5:
+            farbe = "#00BEE4"
+        elif platz == 6:
+            farbe = "#57E6FF"
+        elif platz == 16:
+            farbe = "#FAAF00"
+        elif platz == 17 or platz == 18:
+            farbe = "#FF0101"
+        else:
+            farbe = "#AFAFAF"
+
+        ax.add_patch(
+        patches.Rectangle(
+            (0.03, y - 0.021),   # (x, y) Startpunkt unten links
+            0.008,               # Breite des Kastens
+            0.036,               # Höhe des Kastens (gleiche Höhe wie das Logo)
+            facecolor= farbe, # Farbe
+            edgecolor="none",
+            zorder=1)
+        )
         # Rang
         ax.text(0.05, y, f"{int(row['Rang'])}.",
                 fontsize=16, va="center", ha="left")
@@ -60,7 +87,7 @@ def render_modern_png(df, logos_dict):
                 # in numpy-array konvertieren und passende Extent setzen
                 logo_arr = np.array(logo)
                 # Extent: (left, right, bottom, top) in data coords (we work in 0..1)
-                left, right = 0.10, 0.14
+                left, right = 0.10, 0.145
                 bottom, top = y - 0.018, y + 0.018
                 ax.imshow(logo_arr, extent=(left, right, bottom, top),
                           aspect='auto', zorder=2)
@@ -118,3 +145,6 @@ def main():
 
     #
     render_modern_png(df, logos_dict)
+
+
+main()
