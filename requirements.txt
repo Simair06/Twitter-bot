@@ -3,3 +3,7 @@ python-dotenv
 requests
 datetime
 tweepy
+pandas
+numpy
+matplotlib
+Pillow
