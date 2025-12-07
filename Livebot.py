@@ -3,14 +3,18 @@ import requests
 from Tweeter import tweet, mdprinter, mprinter, tweet_table
 from openpyxl import load_workbook
 import Tabelle as table
+import Scraper
+import time
 
 #https://www.openligadb.de/
 
 current_matches_url = "https://api.openligadb.de/getmatchdata/bl1"
 matchday_url = "https://api.openligadb.de/getcurrentgroup/bl1"
  
+datenow = datetime.datetime.now()
+print(datenow)
 
-print(datetime.datetime.now())
+
 
 bundesliga_vereine = {
     "FC Bayern München": "🔴⚪ | FCB",
@@ -100,7 +104,15 @@ def tablewriter():
     tweet_table()
     
     
-
+def news():
+    news = Scraper.main()
+    
+    for article in news:
+        time.sleep(3)
+        if len(article) >= 1:
+            tweet(article)
+        else:
+            continue
 
 
 
@@ -111,6 +123,7 @@ def main():
     now = datetime.datetime.now()
     if now.weekday() == 0 and now.hour >= 8 and now.hour < 12:  #0 ist Montag
         tablewriter()
+    news()
 
 
     

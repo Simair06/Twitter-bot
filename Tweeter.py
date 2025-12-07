@@ -22,6 +22,7 @@ def keys():
 def tweet(post):
     print("Working dir:", os.getcwd())
     client, _ = keys()
+    print(post)
     response = client.create_tweet(text=post)
     print("POst")
     print(response)
