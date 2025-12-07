@@ -46,6 +46,7 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           API2_KEY: ${{ secrets.API2_KEY }}
+          GEM_KEY: ${{ secrets.GEM_KEY}}
 
       # 5️⃣ Änderungen committen und pushen
       - name: Commit and push updated files
