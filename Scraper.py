@@ -110,7 +110,7 @@ def main():
 
 
     if len(text) >= 1:
-        prompt = f"Please write {tweets} tweet(s) with Hashtag and everything to gain reach about the following articles. Try to define the most important news and write about them the most. Write it in english and if you put different infos in a tweet (example form different articels in 1 tweet), please add a space for example 1 line between. do only include news from 1. Bundesliga. Please only return a string with the two tweets seperated by a |, if theres only 1 tweet do tweet | . it's very important to not write more than 265 signs per tweet!: {text}"
+        prompt = f"Please write {tweets} tweet(s) with Hashtag and everything to gain reach about the following articles. Try to define the most important news and write about them the most. Write it in english and if you put different infos in a tweet (example form different articels in 1 tweet), please add a space for example 1 line between. Please try to write the info very short, that you can potentially fit 2 different news in 1 tweet, if there are multiple. do only include news from 1. Bundesliga. Please only return a string with the two tweets seperated by a |, if theres only 1 tweet do tweet | . it's very important to not write more than 265 signs per tweet!: {text}"
 
         tweets = ask_gemini(prompt)
     else:
