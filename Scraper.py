@@ -8,9 +8,9 @@ import os
 
 def ask_gemini(prompt: str):
     load_dotenv()
-    API_KEY = os.getenv("GEM_API")
+    GEM_KEY = os.getenv("GEM_KEY")
     MODEL = "gemini-2.5-flash"
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent?key={API_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent?key={GEM_KEY}"
     data = {
         "contents": [
             {"parts": [{"text": prompt}]}
