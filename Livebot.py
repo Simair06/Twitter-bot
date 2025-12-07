@@ -6,6 +6,7 @@ import Tabelle as table
 import Scraper
 import time
 
+#Spiele in excel bis Spieltag 19 aktualisiert. Dann excel löschen und neu generieren
 #https://www.openligadb.de/
 
 current_matches_url = "https://api.openligadb.de/getmatchdata/bl1"
