@@ -3,9 +3,10 @@ from dotenv import load_dotenv
 import os
 import datetime
 from openpyxl import load_workbook
-
+import time
 
 def keys():
+    time.sleep(2)
     load_dotenv()
     bearer_key = os.getenv("BEARER_KEY")
     api_key = os.getenv("API_KEY")
