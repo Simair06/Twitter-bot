@@ -24,9 +24,14 @@ def tweet(post):
     print("Working dir:", os.getcwd())
     client, _ = keys()
     print(post)
-    response = client.create_tweet(text=post)
-    print("POst")
-    print(response)
+    
+    try:
+        response = client.create_tweet(text=post)
+    except:
+        with open("tweets.txt", "a") as f:
+            f.write(f"{post}\n")
+        print("POst")
+        print(response)
 
 
 def tweet_table():
