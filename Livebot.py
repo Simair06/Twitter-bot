@@ -122,7 +122,7 @@ def main():
     get_matchday()
     pruefe_job(bundesliga_vereine)
     now = datetime.datetime.now()
-    if now.weekday() == 0 and now.hour >= 8 and now.hour < 14:  #0 ist Montag
+    if now.weekday() == 0 and now.hour >= 8 and now.hour < 12:  #0 ist Montag
         tablewriter()
     news()
 
