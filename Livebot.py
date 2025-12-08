@@ -109,7 +109,7 @@ def news():
     news = Scraper.main()
     
     for article in news:
-        time.sleep(3)
+        time.sleep(1)
         if len(article) >= 1:
             tweet(article)
         else:
