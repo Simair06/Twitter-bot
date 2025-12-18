@@ -3,28 +3,58 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 import os
+import time
 
 
 
-def ask_gemini(prompt: str):
+def ask_gemini(prompt: str, retries: int = 5):
     load_dotenv()
     GEM_KEY = os.getenv("GEM_KEY")
-    MODEL = "gemini-2.5-flash"
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent?key={GEM_KEY}"
+
+    MODELS = [
+        "gemini-2.5-flash",
+        "gemini-1.5-pro"
+    ]
+
     data = {
         "contents": [
             {"parts": [{"text": prompt}]}
         ]
     }
 
-    response = requests.post(url, json=data)  # ← requests macht das JSON selbst
-    response.raise_for_status()
-    result = response.json()
+    for model in MODELS:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEM_KEY}"
 
-    try:
-        return result["candidates"][0]["content"]["parts"][0]["text"]
-    except KeyError:
-        return result
+        for attempt in range(retries):
+            try:
+                response = requests.post(
+                    url,
+                    json=data,
+                    timeout=30
+                )
+
+                if response.status_code == 200:
+                    result = response.json()
+                    return result["candidates"][0]["content"]["parts"][0]["text"]
+
+                if response.status_code in (429, 500, 503):
+                    wait = 2 ** attempt
+                    print(f"[Gemini] {model} {response.status_code}, retry in {wait}s")
+                    time.sleep(wait)
+                    continue
+
+                response.raise_for_status()
+
+            except (requests.exceptions.RequestException, KeyError) as e:
+                wait = 2 ** attempt
+                print(f"[Gemini] {model} error: {e}, retry in {wait}s")
+                time.sleep(wait)
+
+        print(f"[Gemini] Model {model} failed, switching...")
+
+    print("[Gemini] All models unavailable")
+    return ""
+
 
 
 
