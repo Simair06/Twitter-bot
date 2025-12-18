@@ -112,8 +112,12 @@ def news():
         time.sleep(1)
         if len(article) >= 1:
             tweet(article)
-        else:
-            continue
+
+    datenow = datetime.datetime.now(datetime.timezone.utc)
+    print(datenow)
+    datestr = datenow.strftime("%Y-%m-%d %H:%MZ")
+    with open("last_exe.txt", "w") as f:
+        f.write(datestr)
 
 
 

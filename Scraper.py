@@ -133,12 +133,6 @@ def scraper():
 
 def main():
     text = scraper()
-    
-    datenow = datetime.datetime.now(datetime.timezone.utc)
-    print(datenow)
-    datestr = datenow.strftime("%Y-%m-%d %H:%MZ")
-    with open("last_exe.txt", "w") as f:
-        f.write(datestr)
         
     if len(text) > 3 :
         tweets = 2

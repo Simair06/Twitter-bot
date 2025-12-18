@@ -55,11 +55,11 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Nur committen, wenn sich etwas geändert hat
-          git add Spieltag.txt posted.txt || true
+          git add Spieltag.txt posted.txt last_exe.txt|| true
 
           if git diff --cached --quiet; then
             echo "Keine Änderungen – kein Commit notwendig."
           else
-            git commit -m "Update Spieltag & posted [${{ github.run_id }}]"
+            git commit -m "Update Spieltag & posted & news [${{ github.run_id }}]"
             git push
           fi

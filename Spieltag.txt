@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 15. Spieltag
+=======
+14. Spieltag
+>>>>>>> b3d35be8efdf55303f625ae69476410b79fe39b5
